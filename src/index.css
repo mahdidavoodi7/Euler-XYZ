@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+a {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+* {
+  box-sizing: border-box;
+}
