@@ -1,6 +1,7 @@
 export const self = {
   asset: {
-    getAll: `/assets`
+    getAll: `/assets`,
+    getOne: `/asset`,
   },
 };
 

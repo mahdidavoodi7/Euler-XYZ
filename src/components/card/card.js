@@ -9,9 +9,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import NoImage from "../../assets/no-image.svg";
 
 const Container = styled(Card)`
-  /* width: calc(33% - 10px); */
   width: 100%;
-  /* background-color: ${({ theme }) => theme.palette.secondary.light}; */
   background-color: white;
   margin-bottom: 20px;
   box-shadow: none !important;
@@ -21,6 +19,12 @@ const Container = styled(Card)`
     box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px 0px !important;
     transform: translateY(-5px);
   }
+`;
+const CardActionsWrapper = styled(CardActions)`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 const ImageContainer = styled.div`
   width: 100%;
@@ -62,7 +66,6 @@ const Image = styled.img`
   height: auto;
   max-width: 100%;
   max-height: 100%;
-  border-radius: 16px 16px 0 0;
 `;
 const Video = styled.video`
   object-fit: contain;
@@ -82,7 +85,7 @@ const PriceContainer = styled.div`
   align-items: center;
 `;
 
-const MyCard = ({ product }) => {
+const MyCard = ({ product, openProduct }) => {
   const [isImageLoaded, setLoad] = useState(false);
   const imageStyle = !isImageLoaded ? { display: "none" } : {};
   const handleImageLoad = useCallback(() => {
@@ -91,12 +94,12 @@ const MyCard = ({ product }) => {
   const getCardImageUrl = () => {
     if (
       product &&
-      product.image_thumbnail_url &&
-      product.image_thumbnail_url.indexOf(".mp4") !== -1
+      product.image_preview_url &&
+      product.image_preview_url.indexOf(".mp4") !== -1
     ) {
-      return <Video loop autoPlay src={product.image_thumbnail_url} />;
-    } else if (product && product.image_url) {
-      return <Image src={product.image_url} />;
+      return <Video loop autoPlay src={product.image_preview_url} />;
+    } else if (product && product.image_preview_url) {
+      return <Image src={product.image_preview_url} />;
     } else if (product && product.asset_contract.image_url) {
       return <Image src={product.asset_contract.image_url} />;
     }
@@ -104,15 +107,7 @@ const MyCard = ({ product }) => {
   };
   return (
     <Container>
-      {/* <CardHeader
-        avatar={
-          
-        }
-        title={}
-        subheader={}
-      /> */}
-
-      <ImageContainer>{getCardImageUrl()}</ImageContainer>
+      <ImageContainer onClick={() => openProduct(product.asset_contract.address, product.token_id)}>{getCardImageUrl()}</ImageContainer>
       <CardContent>
         <Title>{product.name}</Title>
         <SubtitleContainer>
@@ -121,7 +116,7 @@ const MyCard = ({ product }) => {
             src={product.collection.banner_image_url}
             style={imageStyle}
             imgProps={{
-              onLoad: handleImageLoad
+              onLoad: handleImageLoad,
             }}
             alt="avatar"
           >
@@ -130,7 +125,7 @@ const MyCard = ({ product }) => {
           <Subtitle>{product.collection.name}</Subtitle>
         </SubtitleContainer>
       </CardContent>
-      <CardActions>
+      <CardActionsWrapper>
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
@@ -144,34 +139,17 @@ const MyCard = ({ product }) => {
             src={product.last_sale && product.last_sale.payment_token.image_url}
           />
         </PriceContainer>
-      </CardActions>
+      </CardActionsWrapper>
     </Container>
-
-    // <div key={`card_${index}`}>
-    //   {product.image_thumbnail_url &&
-    //   product.image_thumbnail_url.indexOf(".mp4") !== -1 ? (
-    //     <video autoPlay src={product.image_thumbnail_url} />
-    //   ) : product.image_thumbnail_url ? (
-    //     <img alt="asset-icon" src={product.image_thumbnail_url} />
-    //   ) : (
-    //     <img alt="asset-icon" src={product.asset_contract.image_url} />
-    //   )}
-    //   <div>{product.name}</div>
-    //   <div>{product.collection && product.collection.name}</div>
-    //   <div>
-    //     {product.last_sale &&
-    //       parseInt(product.last_sale.total_price) /
-    //         Math.pow(10, parseInt(product.last_sale.payment_token.decimals))}
-    //     <span>
-    //       {product.last_sale && product.last_sale.payment_token.symbol}
-    //     </span>
-    //     <img
-    //       alt="token-icon"
-    //       src={product.last_sale && product.last_sale.payment_token.image_url}
-    //     />
-    //   </div>
-    // </div>
   );
 };
 
-export default MyCard;
+function areEqual(prevProps, nextProps) {
+  if(prevProps.product !== nextProps.product) {
+    return false
+  }
+
+  return true;
+}
+
+export default React.memo(MyCard, areEqual);

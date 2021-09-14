@@ -22,10 +22,10 @@ const theme = createTheme({
     },
     secondary: {
       light: "#F3F7FA",
-      main: "#fcaa8c",
+      main: "#A4BBCD",
       dark: "#7292AA",
       contrastText: "#082b35"
-    }
+    },
   }
 });
 const AppThemeProvider = ({ children }) => {

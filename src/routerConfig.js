@@ -1,11 +1,9 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import ScrollToTop from "./handler/scrollToTop";
-import Home from "./pages/home/home";
+import Home from "./pages/home";
 
 const RouterConfig = (props) => {
   return (
     <Router>
-      <ScrollToTop />
       <Switch>
         <Route path="/" exact component={Home} />
       </Switch>
