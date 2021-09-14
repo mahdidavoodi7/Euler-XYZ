@@ -1,29 +1,41 @@
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import {
+  createTheme,
+  ThemeProvider as MuiThemeProvider
+} from "@material-ui/core/styles";
+import { ThemeProvider } from "styled-components";
+import NoSsr from "@material-ui/core/NoSsr";
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["Dm Sans", "sans-serif"].join(","),
+    fontFamily: ["Open Sans", "sans-serif"].join(",")
   },
   palette: {
+    background: "#F6F5F5",
     error: {
-      main: "#b00020",
+      main: "#b00020"
     },
     primary: {
-      light: "#009d69",
-      main: "#009d69",
-      dark: "#009d69",
-      contrastText: "#fff",
+      light: "#5BAEC6",
+      main: "#D3E0EA",
+      dark: "#03556C",
+      contrastText: "#082b35"
     },
     secondary: {
-      light: "#fcaa8c",
+      light: "#F3F7FA",
       main: "#fcaa8c",
-      dark: "#fcaa8c",
-      contrastText: "#000",
-    },
-  },
+      dark: "#7292AA",
+      contrastText: "#082b35"
+    }
+  }
 });
 const AppThemeProvider = ({ children }) => {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return (
+    <NoSsr>
+      <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      </MuiThemeProvider>
+    </NoSsr>
+  );
 };
 
 export default AppThemeProvider;
